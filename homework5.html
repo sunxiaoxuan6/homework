@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="js/jquery-3.4.1.min.js"></script>
+		<style type="text/css">
+			.box{
+				margin: 0 auto;
+				width: 550px;
+				height: 800px;
+			}
+			.box .box1 h2{
+				font-size: 25px;
+				text-align: center;
+				font-weight: 800;
+			}
+			.box .box1{
+				height: 380px;
+			}
+			.box .box1 .box_computer{
+				float: left;
+				width: 250px;
+				height: 350px;
+				border: 5px solid red;
+			}
+			.box .box1 .box_person{
+				float: right;
+				height: 350px;
+				width: 250px;
+				border: 5px solid green;
+			}
+			
+			
+			.box .box2{
+				padding-top: 20px;
+	            margin-left: 70px;	
+			}
+			.box .box2 .box_left{
+				float: left;
+			}
+			
+		
+			.box3{
+				text-align: center;
+				width: 400px;
+				height: 100px;
+			}
+			.box3 .box_right{
+			    float: right;
+			    border: red 1px dashed;
+			    display: none;
+			
+			}
+			.box3 .box_right2{
+			    float: right;
+			    border: blue 1px dashed;
+			    display: none;
+			}
+			
+			.box3 .box_right3{
+			    float: right;
+			    border: #21ff8c 1px dashed;
+			    display: none;
+			}
+			.box3 .box_right span{
+			    line-height: 100px;
+			    font-size: 30px;
+			    color: #ff0000;
+			}
+			.box3 .box_right2 span{
+			    line-height: 100px;
+			    font-size: 30px;
+			    color: blue;
+			}
+			.box_right3 span{
+			    line-height: 100px;
+			    font-size: 30px;
+			    color:  #21ff8c;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<!-- 1、 -->
+		<div class="box1">
+		   <div class="box_computer">
+			   <h2>电脑</h2>
+			   <img id="img_computer" src="img/0.png" />
+		   </div>
+		   <div class="box_person">
+			   <h2>玩家<h2>
+			   <img id="img_person" src="img/0.png" />
+		   </div>
+		</div>
+		<!-- 2、 -->
+		<div class="box2">
+			<div class="box_left">
+				<h2>你想出的是</h2>
+				<img src="img/b0.png" />
+				<img src="img/b1.png" />
+				<img src="img/b2.png" />
+			</div>
+		</div>
+		<!-- 3、 -->
+		<div class="box3">
+		 <div class="box_right" style="display: none;">
+			<span>很遗憾，你输了！</span>
+		</div>
+	 	<div class="box_right2" style="display: none;">
+			<span>恭喜，你赢了！</span>
+		</div>
+		<div class="box_right3" style="display: block;">
+			<span>平局！再来一次吧</span>
+		</div>
+		</div>
+		</div>
+		
+		
+		
+		
+		<script>
+			$(function () {
+			    /**
+			     * 人的选择
+			     */
+			    function person() {
+			        var img = $(".box_left img");
+			        var img_person = $("#img_person");
+			        img.on("click", function () {
+			            var index = img.index(this);
+			            switch (index) {
+			                case 0:
+			                    setImg(img_person, 0);
+			                    judge(0, computer());
+			                    break;
+			                case 1:
+			                    setImg(img_person, 1);
+			                    judge(1, computer());
+			                    break;
+			                case 2:
+			                    setImg(img_person, 2);
+			                    judge(2, computer());
+			                    break;
+			            }
+			
+			        })
+			    }
+			
+			    /**
+			     * 电脑的选择 随机
+			     * @returns {number} 返回的选择
+			     */
+			    function computer() {
+			        var cp_num = parseInt(Math.random() * 3);
+			        var img_computer = $("#img_computer");
+			        switch (cp_num) {
+			            case 0:
+			                setImg(img_computer, 0);
+			                break;
+			            case 1:
+			                setImg(img_computer, 1);
+			                break;
+			            case 2:
+			                setImg(img_computer, 2);
+			                break;
+			        }
+			        return cp_num;
+			    }
+			
+			    /**
+			     * 判断是否获胜
+			     * @param person 人的选择
+			     * @param computer 电脑的选择
+			     */
+			    function judge(person, computer) {
+			        var box1 = $(".box_right");
+			        var box2 = $(".box_right2");
+			        var box3 = $(".box_right3");
+			        if (person === computer) {
+			            showOrHide(box1, box2, box3);
+			        } else if (person - computer === 1 || person - computer === -2) {
+			            showOrHide(box1, box3, box2);
+			        } else {
+			            showOrHide(box2, box3, box1);
+			        }
+			    }
+			
+			    /**
+			     * 设置图片
+			     * @param imgID 图片id
+			     * @param imgSrc 图片路径
+			     */
+			    function setImg(imgID, imgSrc) {
+			        imgID.attr("src", "img/" + imgSrc + ".png");
+			
+			    }
+			
+			    /**
+			     * 设置结果显示/隐藏
+			     * @param box1 隐藏
+			     * @param box2 隐藏
+			     * @param box3 显示
+			     */
+			    function showOrHide(box1, box2, box3) {
+			        box1.hide();
+			        box2.hide();
+			        box3.show();
+			    }
+			
+			    person();
+			
+			});
+		</script>
+	</body>
+</html>
